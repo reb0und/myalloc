@@ -77,7 +77,7 @@ void Allocator::dealloc(void *ptr) {
     Block* block = reinterpret_cast<Block*>(reinterpret_cast<char*>(ptr) - sizeof(Block));
     block->set_status(true);
 
-    // Check if the next block is free and merge
+    // check if the next block is free and coalesce
     Block* next_block = reinterpret_cast<Block*>(reinterpret_cast<char*>(block) + sizeof(Block) + block->get_size());
     if (reinterpret_cast<char*>(next_block) < reinterpret_cast<char*>(mem_pool) + POOL_SIZE && next_block->get_status()) {
         block->set_size(block->get_size() + sizeof(Block) + next_block->get_size());
