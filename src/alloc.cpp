@@ -56,7 +56,6 @@ void* Allocator::alloc(size_t size) {
 
     // check if splitting block is necessary
     if (best_block->get_size() > size + sizeof(Block)) {
-        std::cout << "Splitting block\n";
         best_block->split(&free_list, size);
     } else {
         if (prev_best_node) {
