@@ -17,7 +17,6 @@ class Allocator {
         void* alloc(size_t size);
         void dealloc(void* ptr);
         LinkedList<Block*>& get_free_list();
-
 };
 
 #endif
