@@ -9,7 +9,7 @@ sh run.sh
 ### Allocating memory
 
 ```cpp
-void* allocated_memory = allocator.alloc(1024);
+void* allocated_memory = allocator.alloc(sizeof(std::string));
 ```
 
 ### Deallocating memory
