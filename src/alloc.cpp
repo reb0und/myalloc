@@ -27,6 +27,8 @@ Allocator::~Allocator() {
 
 // returns address to usable memory after allocated block after block's metadata
 void* Allocator::alloc(size_t size) {
+    std::lock_guard<std::mutex> lock(mtx);
+
     Node<Block*>* current_node = free_list.get_head();
     Node<Block*>* prev_node = 0;
     Node<Block*>* best_node = 0;
@@ -72,6 +74,8 @@ void* Allocator::alloc(size_t size) {
 }
 
 void Allocator::dealloc(void *ptr) {
+    std::lock_guard<std::mutex> lock(mtx);
+
     if (!ptr) return;
 
     Block* block = reinterpret_cast<Block*>(reinterpret_cast<char*>(ptr) - sizeof(Block));

@@ -9,7 +9,7 @@
  
 void benchmark_standard_alloc(size_t size, int16_t allocations) {
     const auto start = std::chrono::steady_clock::now();
-    for (int i = 0; i < allocations; i++) {
+    for (int i = 0; i < allocations; ++i) {
         void* mem = malloc(size);
         free(mem);
     }
@@ -19,7 +19,7 @@ void benchmark_standard_alloc(size_t size, int16_t allocations) {
 
 void benchmark_alloc(Allocator& allocator, size_t size, int16_t allocations) {
     const auto start = std::chrono::steady_clock::now();
-    for (int i = 0; i < allocations; i++) {
+    for (int i = 0; i < allocations; ++i) {
         void* mem = allocator.alloc(size);
         allocator.dealloc(mem);
     }
