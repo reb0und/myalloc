@@ -25,7 +25,7 @@ Allocator::~Allocator() {
     }
 }
 
-// returns address to usable memory after allocated block after block's metadat
+// returns address to usable memory after allocated block after block's metadata
 void* Allocator::alloc(size_t size) {
     Node<Block*>* current_node = free_list.get_head();
     Node<Block*>* prev_node = 0;
