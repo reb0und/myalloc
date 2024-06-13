@@ -1,6 +1,7 @@
 #include <cstdlib>
 #include <iostream>
 #include <stddef.h>
+#include <thread>
 #include <vector>
 
 #include "alloc.h"
@@ -98,6 +99,25 @@ void stress_test(Allocator& allocator, size_t num_operations, size_t max_block_s
     }
 }
 
+void alloc_wrap(Allocator& allocator, size_t size, int8_t allocations) {
+    for (int i = 0; i < allocations; ++i) {
+        void* mem = allocator.alloc(size);
+        allocator.dealloc(mem);
+    }
+}
+
+void test_multithreaded(Allocator& allocator, size_t size, int8_t allocations) {
+    std::vector<std::thread> threads;
+
+    for (int i = 0; i < allocations; ++i) {
+        threads.emplace_back(alloc_wrap, std::ref(allocator), size, allocations);
+    }
+
+    for (auto& t : threads) {
+        t.join();
+    }
+}
+
 int main() {
     try {
         Allocator allocator;
@@ -105,8 +125,9 @@ int main() {
         test_basic_alloc_dealloc(allocator);
         test_multi_alloc_dealloc(allocator);
         stress_test(allocator, 1000, 1024 * 10);
+        test_multithreaded(allocator, 16, 100);
 
-        benchmark(allocator, 8, 500);
+        benchmark(allocator, 8, 100);
     } catch (const std::exception& e) {
         std::cerr << e.what() << '\n';
     }
